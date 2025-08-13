@@ -4,46 +4,75 @@ This repository contains the PHP backend APIs for the NotesApp Android applicati
 Setup Instructions
 1. Requirements
 PHP 7.x or above
-
 MySQL Server
 
 A web server like Apache or Nginx (XAMPP or MAMP recommended for local setup)
 
-2. Database Setup
-Create a MySQL database named notes_db (or your preferred name).
+**2. Database Setup**
+Step-by-step plan (super simple)
+Install & run XAMPP (Windows/Mac) → start Apache + MySQL.
 
-Import the following SQL to create the notes table:
+**Open phpMyAdmin → create DB/table with the SQL below.**
 
+Create folder **htdocs/notes_api/** and put the 5 PHP files there.
+
+Step-by-step plan (super simple)
+Install & run XAMPP (Windows/Mac) → start Apache + MySQL.
+
+Open phpMyAdmin → create DB/table with the SQL below.
+
+**Create folder htdocs/notes_api/ and put the 5 PHP files there.**
+
+Test in browser:
+
+http://YOUR_PC_IP/notes_api/notes_list.php → should return JSON.
+
+Update your Android baseUrl to http://YOUR_PC_IP/notes_api/ and replace/add the code I give below.
+
+Run the app → Add/Edit/Delete notes.
+
+Get your PC IP (same Wi-Fi as phone): Windows ipconfig → IPv4, Mac ifconfig | grep inet.
+
+**1) MySQL — Schema (phpMyAdmin → SQL)**
 sql
-Copy
-Edit
-CREATE TABLE notes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    deleted INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE DATABASE IF NOT EXISTS notesdb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE notesdb;
+
+CREATE TABLE IF NOT EXISTS notes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  last_modified TIMESTAMP NULL DEFAULT NULL,
+  deleted TINYINT(1) DEFAULT 0,
+  version INT DEFAULT 1
 );
-3. Configure PHP files
-Open each PHP file (notes_create.php, notes_update.php, etc.).
 
-Update the database connection settings (host, username, password, database) at the top of each file to match your MySQL credentials.
+http://YOUR_PC_IP/notes_api/notes_list.php → should return JSON.
 
-php
-Copy
-Edit
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "notes_db";
-4. Run the Backend
-Place the PHP files in your web server’s root directory or a subdirectory.
+Update your Android baseUrl to http://YOUR_PC_IP/notes_api/ and replace/add the code I give below.
 
-Make sure your web server and MySQL server are running.
+Run the app → Add/Edit/Delete notes.
 
-Test the APIs by accessing them via HTTP requests (e.g., http://localhost/notes_create.php).
+Get your PC IP (same Wi-Fi as phone): Windows ipconfig → IPv4, Mac ifconfig | grep inet.
 
+
+**1) MySQL — Schema (phpMyAdmin → SQL)**
+sql
+CREATE DATABASE IF NOT EXISTS notesdb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE notesdb;
+
+CREATE TABLE IF NOT EXISTS notes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  last_modified TIMESTAMP NULL DEFAULT NULL,
+  deleted TINYINT(1) DEFAULT 0,
+  version INT DEFAULT 1
+);
 API Endpoints
 Method	URL	Description
 GET	notes_list.php	Get all notes
